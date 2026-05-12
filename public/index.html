@@ -395,6 +395,7 @@
       "search-engine",
       "https://duckduckgo.com/?q=%s",
     );
+    window.settings.default("close-protection", true);
     document.getElementById("search-lesson-engine").value =
       await window.settings.get("search-engine");
   </script>
