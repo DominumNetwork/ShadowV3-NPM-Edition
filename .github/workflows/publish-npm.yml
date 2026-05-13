@@ -21,11 +21,23 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org
 
+      - name: Validate npm token is configured
+        if: ${{ secrets.NPM_TOKEN == '' }}
+        run: |
+          echo "NPM_TOKEN is not configured for this repository."
+          echo "Add a classic npm automation token at Settings -> Secrets and variables -> Actions -> New repository secret."
+          exit 1
+
       - name: Install dependencies
         run: npm ci
 
       - name: Verify package contents
         run: npm pack --dry-run
+
+      - name: Verify npm authentication
+        run: npm whoami
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to npm
         run: npm publish --access public
