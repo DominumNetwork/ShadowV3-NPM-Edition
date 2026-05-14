@@ -1,6 +1,6 @@
-import { HistoryHelper } from "/assets/js/history_helper.js";
-import { SettingsManager } from "/assets/js/settings_manager.js";
-import { BareMuxConnection } from "/baremux/index.mjs";
+import { HistoryHelper } from "./history_helper.js";
+import { SettingsManager } from "./settings_manager.js";
+import { BareMuxConnection } from "../../baremux/index.mjs";
 const searchInput = document.getElementById("__shadow-search-bar");
 const addTabButton = document.getElementById("add-tab");
 
@@ -142,7 +142,7 @@ class Tab {
     tab.img.className = "tab-icon";
     tab.img.alt = "Favicon";
     if (tab.src.startsWith('shadow://')) {
-      const favicon = `/assets/imgs/icons/pages/${tab.src.replace('shadow://', '')}.png`;
+      const favicon = `./assets/imgs/icons/pages/${tab.src.replace('shadow://', '')}.png`;
       tab.img.src = favicon;
     }
 
@@ -288,7 +288,7 @@ class Tab {
     const src = this.parseUrl(i);
     let icon;
     if (src.startsWith("shadow://")) {
-      icon = `/assets/imgs/icons/pages/${src.replace("shadow://", "")}.png`;
+      icon = `./assets/imgs/icons/pages/${src.replace("shadow://", "")}.png`;
     } else {
       icon = `https://www.google.com/s2/favicons/imgs/icons?domain=${src}&sz=24`;
     }
@@ -406,8 +406,8 @@ class Tab {
 
   async setTransport(url, transport) {
     url = url ?? (await this.settings.get("server") || `wss://${location.host}/wisp/`);
-    transport = transport ?? (await this.settings.get("transport") || "/epoxy/index.mjs");
-    if (transport.includes("baremod")) transport = "/epoxy/index.mjs";
+    transport = transport ?? (await this.settings.get("transport") || "./epoxy/index.mjs");
+    if (transport.includes("baremod")) transport = "./epoxy/index.mjs";
     await this.connection.setTransport(transport, [{ wisp: url }]);
     this.settings.set("server", url);
     this.settings.set("transport", transport);
